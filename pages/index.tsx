@@ -17,15 +17,15 @@ import SHOP_DATA from "../DATA"
 
 const Home: React.FunctionComponent = () => {
 
-  const [toggleCart, updateToggleCart] = useState(false)
-  const [toggleModal, updateToggleModal] = useState(false)
-  const [loading, updateLoading] = useState(false)
-  const [cartItems, updateCartItems] = useState([])
-  const [featured, updateFeatured] = useState({})
+  const [toggleCart, updateToggleCart] = useState<boolean>(false)
+  const [toggleModal, updateToggleModal] = useState<boolean>(false)
+  const [loading, updateLoading] = useState<boolean>(false)
+  const [cartItems, updateCartItems] = useState<any>([])
+  const [featured, updateFeatured] = useState<any>([]);
 
-  const [products, setProduct] = useState([]);
+  const [products, setProduct] = useState<any>([]);
   const [error, setError] = useState('');
-  const [category, updateCategory] = useState(["People", "Food", "Landmarks"]);
+  const [category, updateCategory] = useState<any>(["People", "Food", "Landmarks"]);
 
   const [selectedOption, updateSelectedOption] = useState('')
   const [activeFilter, setActiveFilter] = useState([]);
@@ -54,10 +54,7 @@ const Home: React.FunctionComponent = () => {
     }
 
     if (!response && response == null) {
-      setError(prevState => ({
-        ...prevState,
-        error: "something went wrong, please check your internet connection"
-      }));
+      console.log("error", "something went wrong, please check your internet connection")
     }
   }
 
