@@ -13,7 +13,6 @@ import { collection, query, getDocs } from "firebase/firestore"
 
 import { fetchProductData, fetchCartData, addTocart, clearCartState } from "../services/actions"
 
-import SHOP_DATA from "../DATA"
 
 const Home: React.FunctionComponent = () => {
 
@@ -22,11 +21,8 @@ const Home: React.FunctionComponent = () => {
   const [loading, updateLoading] = useState<boolean>(false)
   const [cartItems, updateCartItems] = useState<any>([])
   const [featured, updateFeatured] = useState<any>([]);
-
   const [products, setProduct] = useState<any>([]);
-  const [error, setError] = useState('');
   const [category, updateCategory] = useState<any>(["People", "Food", "Landmarks"]);
-
   const [selectedOption, updateSelectedOption] = useState('')
   const [activeFilter, setActiveFilter] = useState([]);
 
@@ -38,18 +34,19 @@ const Home: React.FunctionComponent = () => {
     handleFetchProductData()
   }, []);
 
+  // fetch product from database
   const handleFetchProductData = async () => {
     updateLoading(true)
     const response = await fetchProductData()
 
     if (response && response != null) {
+      updateFeatured(response?.find((el: any) => el?.featured == true))
 
       setProduct(response?.map((el, index) => ({
         ...el,
         id: index
       })))
 
-      updateFeatured(products.find(el => el.featured == true))
       updateLoading(false)
     }
 
@@ -58,7 +55,7 @@ const Home: React.FunctionComponent = () => {
     }
   }
 
-
+  // add item to cart
   const addTCart = async (item: any) => {
     const existingItem = cartItems.length > 0 && cartItems.find(el => el.id === item.id)
 
@@ -67,10 +64,11 @@ const Home: React.FunctionComponent = () => {
     } else {
 
       const payload = {
-        name: item.name,
-        price: parseInt(item.price),
+        name: item?.name,
+        price: parseInt(item?.price),
         image: {
-          src: item.image.src,
+          src: item?.image?.src,
+          alt: item?.image?.alt,
         },
         id: item.id
       }
@@ -82,24 +80,28 @@ const Home: React.FunctionComponent = () => {
     }
   }
 
+  // toggle modal
   const openModal = () => {
     updateToggleModal(prev => !prev)
   }
 
+  // toggle cart box
   const handleToggleCart = () => {
     updateToggleCart(prev => !prev)
   }
 
+  // clears cart items 
   const clearCartItems = async () => {
     updateCartItems([])
     localStorage.setItem("cart", JSON.stringify([]))
     updateToggleCart(false)
   }
 
-  const addDecimals = (num) => {
+  const addDecimals = (num: number) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
 
+  // calculate total cart item
   const calculateTotal = () => {
     if (cartItems?.length > 0) {
       return addDecimals(cartItems?.reduce((acc, item) => acc + item.price, 0))
@@ -113,13 +115,13 @@ const Home: React.FunctionComponent = () => {
 
   const sortPriceByAscending = () => {
     if (products?.length > 0) {
-      return products?.sort((a, b) => b.price - a.price)
+      return products?.sort((a: any, b: any) => b.price - a.price)
     }
   }
 
   const sortAlphabeticallyByAscending = () => {
     if (products?.length > 0) {
-      products?.sort((a, b) => {
+      products?.sort((a: any, b: any) => {
         var textA = a.name.toLowerCase();
         var textB = b.name.toLowerCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
@@ -127,22 +129,20 @@ const Home: React.FunctionComponent = () => {
     }
   }
 
-  const filterByCategory = (category) => {
+  const filterByCategory = (category: any) => {
     if (products?.length > 0) {
       return products?.filter(itm => itm?.category.toLowerCase() == category.toLowerCase())
     }
   }
 
-  const handleChecked = (text) => (event) => {
+  const handleChecked = (text: string) => (event: any) => {
     setActiveFilter((prev) => ({
       ...prev,
       [text]: event.target.checked,
     }));
   };
 
-  console.log(activeFilter, "activeFilter")
-
-  const filterByPriceRange = (amount) => {
+  const filterByPriceRange = (amount: number) => {
     // if(products?.length > 0) {
     //   products?.filter((item) => {
     //     if(item.price < amount) {
@@ -153,8 +153,6 @@ const Home: React.FunctionComponent = () => {
     //   })
     // }
   }
-
-  console.log(products, "products")
 
   if (selectedOption === "A - Z") {
     sortAlphabeticallyByAscending()
@@ -182,7 +180,7 @@ const Home: React.FunctionComponent = () => {
     </div>
   )
 
-
+  // displays loading component on data load
   const Loader = () => (
     <div className="loader">
       <Image width={100} src={(require("../public/Spinner-1s-200px.svg"))} />
@@ -229,12 +227,13 @@ const Home: React.FunctionComponent = () => {
                   <p className="about_text">People also buy</p>
                 </div>
                 <div className="also_bought_images_grid">
-                  {featured?.details?.recommendations?.map((el, index) => (
+                  {featured?.details?.recommendations?.map((el: any, index: number) => (
                     <img
                       key={index}
                       src={el.src}
                       className="also_bought_images"
                       height={'100%'}
+                      alt={el.alt}
                     />
                   ))}
                 </div>
@@ -275,8 +274,8 @@ const Home: React.FunctionComponent = () => {
             <div className="row">
               <div className="col-md-3 filter">
                 <h3 className="category">Category</h3>
-                {category?.map((el, id) => (
-                  <div className="check_list" key={id}>
+                {category?.map((el: any, index: number) => (
+                  <div className="check_list" key={index}>
                     <input
                       type="checkbox"
                       onChange={handleChecked(el)}
@@ -286,8 +285,8 @@ const Home: React.FunctionComponent = () => {
                 ))}
                 <div className="price_range">
                   <h3 className="category">Price range</h3>
-                  {[0, 1, 2].map((el, index) => (
-                    <div className="check_list">
+                  {[0, 1, 2].map((el: any, index: number) => (
+                    <div className="check_list" key={index}>
                       <input type="checkbox" />
                       <label>people</label>
                     </div>
@@ -326,8 +325,8 @@ const Home: React.FunctionComponent = () => {
               />
             </div>
             <h3 className="filter_text">Filter</h3>
-            {category?.map((el, id) => (
-              <div className="check_list" key={id}>
+            {category?.map((el: any, index: number) => (
+              <div className="check_list" key={index}>
                 <input
                   type="checkbox"
                   onChange={handleChecked(el)}
@@ -338,8 +337,8 @@ const Home: React.FunctionComponent = () => {
 
             <div className="price_range">
               <h3 className="filter_text">Price range</h3>
-              {[0, 1, 2, 3].map((el, index) => (
-                <div className="check_list">
+              {[0, 1, 2, 3].map((el: any, index: number) => (
+                <div className="check_list" key={index}>
                   <input type="checkbox" />
                   <label>people</label>
                 </div>

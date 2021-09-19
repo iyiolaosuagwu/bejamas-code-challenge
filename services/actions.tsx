@@ -28,9 +28,6 @@ const addTocart = async (data) => {
     console.log("Document written with ID: ", docRef.id);
 }
 
-const clearCartState = async (data) => {
-    await deleteDoc(doc(db, "cart", {}));
-    console.log("Documents deleted");
-}
+const clearCartState = async () => { }
 
 export { fetchProductData, fetchCartData, addTocart, clearCartState }
