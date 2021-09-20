@@ -49,9 +49,12 @@ const Home: React.FunctionComponent = () => {
     const response = await fetchProductData()
 
     if (response && response != null) {
-      updateFeatured(response?.find((el: any) => el?.featured == true))
-
       setProduct(response?.map((el, index) => ({
+        ...el,
+        id: index
+      })))
+
+      updateFeatured(response?.map((el, index) => ({
         ...el,
         id: index
       })))
@@ -66,7 +69,7 @@ const Home: React.FunctionComponent = () => {
 
   // add item to cart
   const addTCart = async (item: any) => {
-    const existingItem = cartItems.length > 0 && cartItems.find(el => el.id === item.id)
+    const existingItem = cartItems.length > 0 && cartItems.find((el: any) => el.id === item.id)
 
     if (existingItem) {
       updateCartItems(cartItems)
@@ -113,7 +116,7 @@ const Home: React.FunctionComponent = () => {
   // calculate total cart item
   const calculateTotal = () => {
     if (cartItems?.length > 0) {
-      return addDecimals(cartItems?.reduce((acc, item) => acc + item.price, 0))
+      return addDecimals(cartItems?.reduce((acc: any, item: any) => acc + item.price, 0))
     }
   }
 
@@ -161,7 +164,6 @@ const Home: React.FunctionComponent = () => {
         />
         {cartItems?.length > 0 && <p className="cart_count">{cartItems?.length}</p>}
       </div>
-
     </div>
   )
 
@@ -171,6 +173,8 @@ const Home: React.FunctionComponent = () => {
       <Image width={100} src={(require("../public/Spinner-1s-200px.svg"))} />
     </div>
   )
+
+  const filterFeaturedItem = featured?.find((el: any, index: number) => el.featured == true)
 
   return (
     <>
@@ -185,31 +189,31 @@ const Home: React.FunctionComponent = () => {
           <div className="featured_post_container">
             {toggleCart && <CartBox cartItems={cartItems} total={calculateTotal()} toggle={handleToggleCart} clearCartItems={clearCartItems} />}
             <div className="flex_title_content">
-              <h2 className="title">{featured?.name}</h2>
-              <button className="add_to_cart_btn web" onClick={() => addTCart(featured)}>
+              <h2 className="title">{filterFeaturedItem?.name}</h2>
+              <button className="add_to_cart_btn web" onClick={() => addTCart(filterFeaturedItem)}>
                 add to cart
               </button>
             </div>
 
             <div
               className="banner"
-              style={{ backgroundImage: `url(${featured?.image?.src})` }}
+              style={{ backgroundImage: `url(${filterFeaturedItem?.image?.src})` }}
             >
               <div className="tag">
                 Photo of the day
           </div>
             </div>
 
-            <button className="add_to_cart_btn mobile" onClick={() => addTCart(featured)}>
+            <button className="add_to_cart_btn mobile" onClick={() => addTCart(filterFeaturedItem)}>
               add to cart
         </button>
 
             <div className="row mt-5">
               <div className="col-lg-6 col-md-12 col-sm-12">
-                <p className="about_text">About the {featured?.name}</p>
-                <p className="sub_title">{featured?.category}</p>
+                <p className="about_text">About the {filterFeaturedItem?.name}</p>
+                <p className="sub_title">{filterFeaturedItem?.category}</p>
                 <p className="description">
-                  {featured?.details?.description}
+                  {filterFeaturedItem?.details?.description}
                 </p>
               </div>
               <div className="col-lg-6 col-md-12 col-sm-12">
@@ -217,7 +221,7 @@ const Home: React.FunctionComponent = () => {
                   <p className="about_text">People also buy</p>
                 </div>
                 <div className="also_bought_images_grid">
-                  {featured?.details?.recommendations?.map((el: any, index: number) => (
+                  {filterFeaturedItem?.details?.recommendations?.map((el: any, index: number) => (
                     <img
                       key={index}
                       src={el.src}
@@ -229,8 +233,8 @@ const Home: React.FunctionComponent = () => {
                 </div>
                 <div className="details_size">
                   <h4>Deatils</h4>
-                  <p>dimmention: {featured?.details?.dimmentions?.width} X {featured?.details?.dimmentions?.height} pixel</p>
-                  <p>Size: {featured?.details?.size}</p>
+                  <p>dimmention: {filterFeaturedItem?.details?.dimmentions?.width} X {filterFeaturedItem?.details?.dimmentions?.height} pixel</p>
+                  <p>Size: {filterFeaturedItem?.details?.size}</p>
                 </div>
               </div>
             </div>
