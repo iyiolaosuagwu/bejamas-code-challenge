@@ -8,8 +8,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     background-color: var(--white) !important;
 }
 
@@ -685,14 +683,13 @@ small {
   
 }
 .mobile_modal_top{
-  /* display: flex; */
   overflow-y: scroll;
   padding: 3rem 1rem 1rem 1rem;
 }
 
 .mobile_modal_footer{
   display: flex;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem;
   border-top: 4px solid #E4E4E4;
   justify-content: space-between;
 }
@@ -889,14 +886,4 @@ input[type=checkbox] {
   }
 }
 
-@media (max-width: 900px) {
-  .also_bought_images_grid {
-    width: 100%;
-    margin-top: 1.5rem;
-  }
-  .fr{
-    display: flex;
-    justify-content: flex-start;
-  }
-}
 

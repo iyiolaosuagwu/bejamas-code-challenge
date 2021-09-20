@@ -7,9 +7,9 @@ import MobileFilterIcon from '../public/mobile_filter.svg'
 import Xicon from '../public/x_icon.svg'
 import CartBox from '../components/CartBox.tsx'
 import ProductCard from '../components/ProductCard.tsx'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import Pagination from '../components/Pagination.tsx'
-import { fetchProductData, fetchCartData, addTocart, clearCartState } from "../services/actions"
+import { fetchProductData } from "../services/actions"
 
 
 const Home: React.FunctionComponent = () => {
