@@ -20,7 +20,7 @@ const CartBox: React.FC<Props> = ({ toggle, cartItems, total, clearCartItems }) 
             </div>
             <div className="scroll">
                 {cartItems?.length > 0 ? cartItems?.map((el, index) => (
-                    <div className="cart_card">
+                    <div className="cart_card" key={index}>
                         <div>
                             <h3>{el.name}</h3>
                             <p>${el.price}</p>

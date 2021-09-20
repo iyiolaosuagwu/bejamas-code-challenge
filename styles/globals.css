@@ -492,6 +492,8 @@ label {
 
 .check_list{
   margin-top: 1rem; 
+  display: flex;
+  align-items: center;
 }
 
 .price_range{
@@ -777,6 +779,14 @@ small {
   opacity: 0.7;
 }
 
+input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
 
 /*  */
 
@@ -818,9 +828,6 @@ small {
   .collection_item {    
     height: 360px;
   }
-  /* .price_range{
-    margin-bottom: 2rem;
-  } */
   .filter{
     display: none;
   }
@@ -875,6 +882,9 @@ small {
     margin-top: 1rem;
   }
   .close_mobile_modal{
+    display: block;
+  }
+  .custom-button{
     display: block;
   }
 }
